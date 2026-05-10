@@ -78,9 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Bot Tubarão V3: assistente de análise técnica em tempo real com IA. Sinais BUY/SELL com confluência de indicadores." },
       { name: "author", content: "Tubarão Trading" },
       { property: "og:title", content: "Bot Tubarão V3 — IA para Trading" },
-      { property: "og:description", content: "Sinais técnicos em tempo real com confluência de indicadores." },
+      { property: "og:description", content: "Bot Tubarão V3: assistente de análise técnica em tempo real com IA. Sinais BUY/SELL com confluência de indicadores." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Bot Tubarão V3 — IA para Trading" },
+      { name: "twitter:description", content: "Bot Tubarão V3: assistente de análise técnica em tempo real com IA. Sinais BUY/SELL com confluência de indicadores." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3e10fe97-41f9-4914-8226-79092fc5071d/id-preview-15f22dc7--1295c408-ecd3-4d7b-8e9b-b134ed323b01.lovable.app-1778410226803.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3e10fe97-41f9-4914-8226-79092fc5071d/id-preview-15f22dc7--1295c408-ecd3-4d7b-8e9b-b134ed323b01.lovable.app-1778410226803.png" },
     ],
     links: [
       {
