@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { generateSignal, type Candle } from "./indicators";
+import { generateSignal, generateBinarySignal, type Candle } from "./indicators";
 
 const ASSETS = {
   // Crypto via Binance
@@ -84,6 +84,31 @@ export const getSignal = createServerFn({ method: "GET" })
       };
     } catch (e: any) {
       console.error("getSignal error", e);
+      return { ok: false as const, error: e?.message ?? "Falha ao buscar dados" };
+    }
+  });
+
+export const getBinarySignal = createServerFn({ method: "GET" })
+  .inputValidator((d: unknown) => Schema.parse(d))
+  .handler(async ({ data }) => {
+    const cfg = ASSETS[data.asset];
+    try {
+      const candles = cfg.source === "binance"
+        ? await fetchBinance(cfg.symbol, data.timeframe)
+        : await fetchYahoo(cfg.symbol, data.timeframe);
+      const sig = generateBinarySignal(candles, data.timeframe);
+      if (!sig) return { ok: false as const, error: "Dados insuficientes" };
+      return {
+        ok: true as const,
+        asset: data.asset,
+        label: cfg.label,
+        kind: cfg.kind,
+        timeframe: data.timeframe,
+        signal: sig,
+        updatedAt: Date.now(),
+      };
+    } catch (e: any) {
+      console.error("getBinarySignal error", e);
       return { ok: false as const, error: e?.message ?? "Falha ao buscar dados" };
     }
   });
