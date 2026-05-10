@@ -26,11 +26,10 @@ export function BinarySignalEngine() {
   });
 
   const ok = data?.ok;
-  const sig = ok ? data.signal : null;
-
-  // live countdown using last fetched candle time
-  const liveSeconds = sig ? Math.max(0, sig.candleSecondsLeft - Math.floor((now - data.updatedAt) / 1000)) : 0;
-  const totalExpiry = sig ? Math.max(0, sig.expirySeconds - Math.floor((now - data.updatedAt) / 1000)) : 0;
+  const sig = ok && data ? data.signal : null;
+  const updatedAt = ok && data ? data.updatedAt : now;
+  const liveSeconds = sig ? Math.max(0, sig.candleSecondsLeft - Math.floor((now - updatedAt) / 1000)) : 0;
+  const totalExpiry = sig ? Math.max(0, sig.expirySeconds - Math.floor((now - updatedAt) / 1000)) : 0;
 
   const actionStyle =
     sig?.action === "CALL" ? "bg-success/15 text-success border-success/40"
