@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import { SignalEngine } from "@/components/shark/SignalEngine";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -33,14 +34,14 @@ function Dashboard() {
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-6 py-12">
-        <div className="glass rounded-2xl p-8 animate-fade-up">
-          <h1 className="font-display text-3xl font-bold text-glow">Dashboard em construção 🛠️</h1>
-          <p className="mt-3 text-muted-foreground">
-            Sua conta está ativa. Em seguida vamos plugar o motor de sinais reais
-            (Binance Spot + indicadores técnicos) e o painel de planos / pagamentos USDT.
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-8 animate-fade-up">
+        <div className="mb-4">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold text-glow">SHARK FOREX ENGINE</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Motor multi-ativo com EMA · RSI · MACD · ATR · Value Chart · Sessões — dados ao vivo, atualização a cada 20s.
           </p>
         </div>
+        <SignalEngine />
       </main>
     </div>
   );
