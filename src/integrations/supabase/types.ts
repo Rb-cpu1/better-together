@@ -14,16 +14,203 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activation_codes: {
+        Row: {
+          code: string
+          created_at: string
+          duration_days: number
+          plan: Database["public"]["Enums"]["plan_tier"]
+          used_at: string | null
+          used_by: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          duration_days?: number
+          plan: Database["public"]["Enums"]["plan_tier"]
+          used_at?: string | null
+          used_by?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          duration_days?: number
+          plan?: Database["public"]["Enums"]["plan_tier"]
+          used_at?: string | null
+          used_by?: string | null
+        }
+        Relationships: []
+      }
+      payment_requests: {
+        Row: {
+          amount_usdt: number
+          created_at: string
+          id: string
+          plan: Database["public"]["Enums"]["plan_tier"]
+          proof_url: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          tx_hash: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_usdt: number
+          created_at?: string
+          id?: string
+          plan: Database["public"]["Enums"]["plan_tier"]
+          proof_url?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          tx_hash?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_usdt?: number
+          created_at?: string
+          id?: string
+          plan?: Database["public"]["Enums"]["plan_tier"]
+          proof_url?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          tx_hash?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          name: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          name?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+        }
+        Relationships: []
+      }
+      signals: {
+        Row: {
+          action: string
+          asset: string
+          confidence: number
+          created_at: string
+          entry: number | null
+          id: string
+          indicators: Json | null
+          outcome: string | null
+          sl: number | null
+          timeframe: string
+          tp: number | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          asset: string
+          confidence: number
+          created_at?: string
+          entry?: number | null
+          id?: string
+          indicators?: Json | null
+          outcome?: string | null
+          sl?: number | null
+          timeframe: string
+          tp?: number | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          asset?: string
+          confidence?: number
+          created_at?: string
+          entry?: number | null
+          id?: string
+          indicators?: Json | null
+          outcome?: string | null
+          sl?: number | null
+          timeframe?: string
+          tp?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          active: boolean
+          expires_at: string
+          id: string
+          plan: Database["public"]["Enums"]["plan_tier"]
+          source: string | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          expires_at: string
+          id?: string
+          plan: Database["public"]["Enums"]["plan_tier"]
+          source?: string | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          expires_at?: string
+          id?: string
+          plan?: Database["public"]["Enums"]["plan_tier"]
+          source?: string | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      payment_status: "pending" | "approved" | "rejected"
+      plan_tier: "basico" | "pro" | "elite"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +337,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      payment_status: ["pending", "approved", "rejected"],
+      plan_tier: ["basico", "pro", "elite"],
+    },
   },
 } as const
