@@ -1,9 +1,10 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { SignalEngine } from "@/components/shark/SignalEngine";
+import { BinarySignalEngine } from "@/components/shark/BinarySignalEngine";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/dashboard")({
 function Dashboard() {
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
+  const [mode, setMode] = useState<"forex" | "binary">("forex");
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/login" }).catch(() => {});
   }, [loading, user, navigate]);
@@ -36,12 +38,34 @@ function Dashboard() {
       </header>
       <main className="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-8 animate-fade-up">
         <div className="mb-4">
-          <h1 className="font-display text-2xl sm:text-3xl font-bold text-glow">SHARK FOREX ENGINE</h1>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold text-glow">
+            SHARK {mode === "binary" ? "BINARY" : "FOREX"} ENGINE
+          </h1>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Motor multi-ativo com EMA · RSI · MACD · ATR · Value Chart · Sessões — dados ao vivo, atualização a cada 20s.
+            {mode === "binary"
+              ? "CALL/PUT com Suporte/Resistência · Value Chart · RSI · MACD · timer da próxima vela."
+              : "Motor multi-ativo com EMA · RSI · MACD · ATR · Value Chart · Sessões — dados ao vivo."}
           </p>
         </div>
-        <SignalEngine />
+        <div className="mb-4 inline-flex rounded-xl border border-border bg-muted/30 p-1">
+          <button
+            onClick={() => setMode("forex")}
+            className={`px-4 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider transition ${
+              mode === "forex" ? "bg-primary text-primary-foreground glow-primary" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Forex / Cripto
+          </button>
+          <button
+            onClick={() => setMode("binary")}
+            className={`px-4 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider transition ${
+              mode === "binary" ? "bg-primary text-primary-foreground glow-primary" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Opções Binárias
+          </button>
+        </div>
+        {mode === "forex" ? <SignalEngine /> : <BinarySignalEngine />}
       </main>
     </div>
   );
