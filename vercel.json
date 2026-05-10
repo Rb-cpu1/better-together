@@ -1,0 +1,24 @@
+{
+  "builds": [
+    {
+      "src": "vite.config.ts",
+      "use": "@lovable.dev/vite-tanstack-config",
+      "config": {
+        "tanstackStart": {
+          "server": { "entry": "server" }
+        }
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/server"
+    }
+  ],
+  "env": {
+    "SUPABASE_URL": "@supabase_url",
+    "SUPABASE_PUBLISHABLE_KEY": "@supabase_publishable_key",
+    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key"
+  }
+}
