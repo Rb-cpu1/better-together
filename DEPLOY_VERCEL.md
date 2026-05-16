@@ -1,54 +1,54 @@
 # Deploy na Vercel — Bot Tubarão
 
-Este projeto roda no Lovable usando **Cloudflare Workers** como adapter (plugin `@lovable.dev/vite-tanstack-config`). Para publicar na Vercel você precisa fazer 4 ajustes simples **depois de exportar para o GitHub** (botão GitHub → Connect no topo do Lovable).
+Tudo já está preparado. Siga os passos abaixo **depois de exportar para o GitHub**
+(botão GitHub → Connect no canto superior do Lovable).
 
-> ⚠️ Não faça esses ajustes dentro do Lovable — o preview vai parar de funcionar. Faça no seu fork/clone do GitHub.
+> ⚠️ **Não execute esses passos dentro do Lovable** — o preview vai parar de
+> funcionar porque o ambiente Lovable depende do adapter Cloudflare.
 
-## 1. Trocar o adapter de Cloudflare → Vercel
+---
 
-Edite `vite.config.ts`:
+## 1) Trocar o `vite.config.ts`
 
-```ts
-import { defineConfig } from "vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
-import tsConfigPaths from "vite-tsconfig-paths";
+No seu repositório clonado, execute:
 
-export default defineConfig({
-  plugins: [
-    tsConfigPaths(),
-    tailwindcss(),
-    tanstackStart({ target: "vercel", customViteReactPlugin: true }),
-    viteReact(),
-  ],
-});
+```bash
+mv vite.config.ts vite.config.lovable.ts.bak
+mv vite.config.vercel.ts vite.config.ts
 ```
 
-## 2. Remover arquivos específicos da Cloudflare
+## 2) Remover arquivos/pacotes específicos da Cloudflare
 
 ```bash
 rm wrangler.jsonc
 rm src/server.ts
-bun remove @cloudflare/vite-plugin @lovable.dev/vite-tanstack-config
+npm uninstall @cloudflare/vite-plugin @lovable.dev/vite-tanstack-config
+# ou: bun remove @cloudflare/vite-plugin @lovable.dev/vite-tanstack-config
 ```
 
-## 3. Variáveis de ambiente na Vercel
+(Opcional) ajuste `src/start.ts` para não importar nada de `src/server.ts`.
+Se já não importa, nada a fazer.
 
-Em **Vercel → Project → Settings → Environment Variables** (Production + Preview):
+## 3) Variáveis de ambiente na Vercel
 
+Em **Vercel → Project → Settings → Environment Variables**
+(Production + Preview + Development):
+
+### Client-side (prefixo `VITE_`)
 | Nome | Valor |
 |------|-------|
-| `VITE_SUPABASE_URL` | URL do Lovable Cloud |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | publishable key |
-| `VITE_SUPABASE_PROJECT_ID` | project id |
-| `SUPABASE_URL` | mesma URL (server) |
-| `SUPABASE_PUBLISHABLE_KEY` | mesma publishable key |
-| `SUPABASE_SERVICE_ROLE_KEY` | service role (NÃO expor) |
+| `VITE_SUPABASE_URL` | `https://cclcdiqwmqsjoqtabgmb.supabase.co` |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjbGNkaXF3bXFzam9xdGFiZ21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNzU4NzEsImV4cCI6MjA5Mzk1MTg3MX0.5WgqQcA1G-LW4yTJ1SYN0EjrG7PR3BESvn81r23zlrk` |
+| `VITE_SUPABASE_PROJECT_ID` | `cclcdiqwmqsjoqtabgmb` |
 
-Pegue os valores em **Lovable → Cloud → Backend → API**.
+### Server-side
+| Nome | Valor |
+|------|-------|
+| `SUPABASE_URL` | `https://cclcdiqwmqsjoqtabgmb.supabase.co` |
+| `SUPABASE_PUBLISHABLE_KEY` | (mesma anon key acima) |
+| `SUPABASE_SERVICE_ROLE_KEY` | **pegue em Lovable → Cloud → Backend → API → service_role** (NUNCA exponha publicamente) |
 
-## 4. Deploy
+## 4) Deploy
 
 ```bash
 npm i -g vercel
@@ -60,6 +60,8 @@ Ou conecte o repo no dashboard da Vercel — ela lê o `vercel.json` automaticam
 
 ---
 
-### Alternativa mais rápida
+## Alternativa mais rápida
 
-Use **Publicar** aqui no Lovable (canto superior direito). Já está em `https://bot-tubarao.lovable.app` e suporta domínio próprio em *Project Settings → Domains*.
+Publicar pelo Lovable (botão **Publicar** no canto superior direito).
+Já está em: <https://bot-tubarao.lovable.app>
+Suporta domínio próprio em *Project Settings → Domains*.
