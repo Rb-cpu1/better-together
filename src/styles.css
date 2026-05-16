@@ -162,3 +162,7 @@
   background-size: 200% 100%;
   animation: shimmer 2.5s linear infinite;
 }
+
+#lovable-badge {
+  display: none !important;
+}
